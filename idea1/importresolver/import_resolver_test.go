@@ -3,7 +3,7 @@ package importresolver_test
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/deemson/go-source-inspector/importresolver"
+	"github.com/deemson/go-source-inspector/idea1/importresolver"
 	"os"
 	"path"
 	"strings"
