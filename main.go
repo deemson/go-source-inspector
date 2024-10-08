@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	flag "github.com/spf13/pflag"
 	"os"
@@ -34,5 +35,16 @@ func main() {
 		flag.PrintDefaults()
 		os.Exit(0)
 	}
-	fmt.Println(workDir)
+	fmt.Print("> ")
+	for {
+		data, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		if err != nil {
+			panic(err.Error())
+		}
+		if data == "exit" {
+			break
+		}
+		fmt.Print(data + "> ")
+	}
+
 }

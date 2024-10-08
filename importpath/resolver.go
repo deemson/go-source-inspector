@@ -1,14 +1,18 @@
 package importpath
 
-import "github.com/spf13/afero"
+import "path"
 
 type Resolver struct {
-	WorkDir     string
-	GoRoot      string
-	ModCacheDir string
-	Fs          afero.Fs
+	WorkDir      string
+	GoModuleName string
+	GoRoot       string
+	ModCacheDir  string
 }
 
-func (r *Resolver) Resolve(pkg string) (string, error) {
-	return "", nil
+func (r *Resolver) Resolve(pkg string) []string {
+	var result []string
+	if r.GoRoot != "" {
+		result = append(result, path.Join(r.GoRoot, "src", pkg))
+	}
+	return result
 }
