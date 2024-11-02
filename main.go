@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	flag "github.com/spf13/pflag"
 	"os"
@@ -21,8 +20,8 @@ func init() {
 		"set working directory where go.mod is located;",
 		"if empty then current directory is used",
 	}, " "))
-	flag.StringVarP(&goRoot, "goroot", "r", os.Getenv("GOROOT"), strings.Join([]string{
-		"set go installation path for core packages look ups;",
+	flag.StringVarP(&goRoot, "go-root", "r", os.Getenv("GOROOT"), strings.Join([]string{
+		"set go install path for core packages look ups;",
 		"defaults to the value of GOROOT env variable;",
 		"will result in an error if both are empty",
 	}, " "))
@@ -35,16 +34,27 @@ func main() {
 		flag.PrintDefaults()
 		os.Exit(0)
 	}
-	fmt.Print("> ")
-	for {
-		data, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	if workDir == "" {
+		var err error
+		workDir, err = os.Getwd()
 		if err != nil {
-			panic(err.Error())
+			fmt.Printf("failed to get current working directory: %s\n", err.Error())
+			os.Exit(1)
 		}
-		if data == "exit" {
-			break
-		}
-		fmt.Print(data + "> ")
 	}
-
+	if goRoot == "" {
+		fmt.Println("go-root flag is not provided and GOROOT env variable is empty")
+		os.Exit(1)
+	}
+	//for {
+	//	data, err := bufio.NewReader(os.Stdin).ReadString('\n')
+	//	if err != nil {
+	//		panic(err.Error())
+	//	}
+	//	data = strings.TrimSpace(data)
+	//	if data == "exit" {
+	//		break
+	//	}
+	//	fmt.Print(data + "> ")
+	//}
 }
